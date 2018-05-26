@@ -1,21 +1,19 @@
 var moment = require('moment');
 var util = require('util');
-var debugLogger = require('./browser.js');
 
 /**
  * Detect Electron renderer process, which is node, but we should
  * treat as a browser.
  */
 
-// var debugLogger;
-// if (typeof process === 'undefined' || process.type === 'renderer') {
-//   debugLogger = require('./browser.js');
-// } else {
-//   debugLogger = require('./node.js');
-// }
+var debugLogger;
+if (typeof process === 'undefined' || process.type === 'renderer') {
+  debugLogger = require('./browser.js');
+} else {
+  debugLogger = require('./node.js');
+}
 
 function logger(namespace) {
-  console.log("ENTER: logger");
   var logger = {
     name: namespace
   };
@@ -107,6 +105,8 @@ function logger(namespace) {
     else
       this[level](name + ': %s', value);
   }
+
+  console.log(logger)
 
   return logger;
 }
