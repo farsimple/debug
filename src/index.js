@@ -13,7 +13,7 @@ if (typeof process === 'undefined' || process.type === 'renderer') {
   debug = require('./node.js');
 }
 
-module.exports = function logger(namespace) {
+function logger(namespace) {
   //console.log(debug.instances);
   var logger = {
     name: namespace
@@ -167,3 +167,5 @@ function now() {
   else
     return Date.now();
 }
+
+module.exports = logger;
