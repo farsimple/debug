@@ -14,6 +14,7 @@ if (typeof process === 'undefined' || process.type === 'renderer') {
 }
 
 function logger(namespace) {
+  console.log("ENTER: logger");
   var logger = {
     name: namespace
   };
