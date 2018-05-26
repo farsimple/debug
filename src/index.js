@@ -6,45 +6,44 @@ var util = require('util');
  * treat as a browser.
  */
 
-var debug;
+var debugLogger;
 if (typeof process === 'undefined' || process.type === 'renderer') {
-  debug = require('./browser.js');
+  debugLogger = require('./browser.js');
 } else {
-  debug = require('./node.js');
+  debugLogger = require('./node.js');
 }
 
 function logger(namespace) {
-  //console.log(debug.instances);
   var logger = {
     name: namespace
   };
   logger.timers = {};
-  debug.formatArgs = formatArgs;
+  debugLogger.formatArgs = formatArgs;
 
-  logger.trace = debug(namespace + ':trace');
-  debug[logger.trace] = console.log.bind(console);
+  logger.trace = debugLogger(namespace + ':trace');
+  debugLogger[logger.trace] = console.log.bind(console);
   logger.trace.color = 'cyan';
-  debug.enable(namespace + ':trace');
+  debugLogger.enable(namespace + ':trace');
 
-  logger.debug = debug(namespace + ':debug');
-  debug[logger.debug] = console.log.bind(console);
-  logger.debug.color = 'blue';
-  debug.enable(namespace + ':debug');
+  logger.debugLogger = debugLogger(namespace + ':debugLogger');
+  debugLogger[logger.debugLogger] = console.log.bind(console);
+  logger.debugLogger.color = 'blue';
+  debugLogger.enable(namespace + ':debugLogger');
 
-  logger.info = debug(namespace + ':info');
-  debug[logger.info] = console.log.bind(console);
+  logger.info = debugLogger(namespace + ':info');
+  debugLogger[logger.info] = console.log.bind(console);
   logger.info.color = 'green';
-  debug.enable(namespace + ':info');
+  debugLogger.enable(namespace + ':info');
 
-  logger.warn = debug(namespace + ':warn');
-  debug[logger.warn] = console.log.bind(console);
+  logger.warn = debugLogger(namespace + ':warn');
+  debugLogger[logger.warn] = console.log.bind(console);
   logger.warn.color = 'orange';
-  debug.enable(namespace + ':warn');
+  debugLogger.enable(namespace + ':warn');
 
-  logger.error = debug(namespace + ':error');
-  debug[logger.error] = console.log.bind(console);
+  logger.error = debugLogger(namespace + ':error');
+  debugLogger[logger.error] = console.log.bind(console);
   logger.error.color = 'red';
-  debug.enable(namespace + ':error');
+  debugLogger.enable(namespace + ':error');
 
   logger.time = function(label) {
     this.timers[label] = now();
@@ -114,7 +113,7 @@ function formatArgs(args) {
   var color = this.useColors ? '%c' : '';
   var namespace = this.namespace.split(':').slice(1, -1).join(':');
   var level = this.namespace.split(':').slice(-1)[0].toUpperCase();
-  args[0] = color + moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + color + level + '[' + namespace + '] ' + color + args[0] + ' ' + color + '(+' + debug.humanize(this.diff) + ')';
+  args[0] = color + moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + color + level + '[' + namespace + '] ' + color + args[0] + ' ' + color + '(+' + debugLogger.humanize(this.diff) + ')';
   var c = 'color: ' + this.color;
   args.splice(1, 0, 'color: inherit', c, 'color: inherit');
   var index = 0;
